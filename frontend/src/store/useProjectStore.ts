@@ -35,7 +35,7 @@ interface ProjectState {
   generateDescriptions: () => Promise<void>;
   generatePageDescription: (pageId: string) => Promise<void>;
   generateImages: () => Promise<void>;
-  generatePageImage: (pageId: string) => Promise<void>;
+  generatePageImage: (pageId: string, forceRegenerate?: boolean) => Promise<void>;
   editPageImage: (pageId: string, editPrompt: string) => Promise<void>;
   
   // 导出
@@ -410,13 +410,13 @@ export const useProjectStore = create<ProjectState>((set, get) => ({
   },
 
   // 生成单页图片
-  generatePageImage: async (pageId) => {
+  generatePageImage: async (pageId, forceRegenerate = false) => {
     const { currentProject } = get();
     if (!currentProject) return;
 
     set({ isGlobalLoading: true, error: null });
     try {
-      await api.generatePageImage(currentProject.id, pageId);
+      await api.generatePageImage(currentProject.id, pageId, forceRegenerate);
       // 刷新项目数据
       await get().syncProject();
     } catch (error: any) {

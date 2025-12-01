@@ -77,8 +77,11 @@ export const SlidePreview: React.FC = () => {
     const page = currentProject.pages[selectedIndex];
     if (!page.id) return;
     
+    // 如果已有图片，需要传递 force_regenerate=true
+    const hasImage = !!page.generated_image_path;
+    
     try {
-      await generatePageImage(page.id);
+      await generatePageImage(page.id, hasImage);
       show({ message: '图片生成成功', type: 'success' });
     } catch (error: any) {
       show({ 
