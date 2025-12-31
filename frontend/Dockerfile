@@ -41,7 +41,7 @@ COPY --from=builder /app/dist /usr/share/nginx/html
 COPY frontend/nginx.conf /etc/nginx/conf.d/default.conf
 
 # 暴露端口
-EXPOSE 80
+EXPOSE 8080
 USER 10010
 # 启动 nginx
 CMD ["nginx", "-g", "daemon off;"]
